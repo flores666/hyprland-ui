@@ -12,7 +12,6 @@ Rectangle {
 
 	IconImage {
 		id: image
-		//visible: false
 		source: Qt.resolvedUrl("icons/volume.svg")
 		width: 21
 		height: 21
@@ -23,7 +22,9 @@ Rectangle {
 	property PwNode sink: Pipewire.defaultAudioSink
 	property PwNode source: Pipewire.defaultAudioSource
 
-	// bounding objects, without this will not work
+	// локальное значение для UI (обновляется мгновенно)
+	property real uiVolume: sink.audio.volume
+
 	PwObjectTracker {
 		objects: [sink, source]
 	}
@@ -32,35 +33,37 @@ Rectangle {
 		target: sink.audio
 		function onVolumeChanged() {
 			preventWrongAudioValues();
+			uiVolume = sink.audio.volume;   // синхронизируем локальное состояние
+			resolveImageSource();
+		}
+		function onMutedChanged() {
 			resolveImageSource();
 		}
 	}
 
 	Component.onCompleted: {
-		if (sink.ready && (isNaN(sink.audio.volume) || sink.audio.volume === undefined || sink.audio.volume === null)) {
+		if (sink.ready && (isNaN(sink.audio.volume) || sink.audio.volume == null)) {
 			sink.audio.volume = 0;
 		}
+		uiVolume = sink.audio.volume;
+		resolveImageSource();
 	}
 
-	// just in case
 	function preventWrongAudioValues() : void {
-		let currentVolume = sink.audio.volume;
-		if (currentVolume > 1) sink.audio.volume = 1;
-		if (currentVolume < 0) sink.audio.volume = 0;
+		sink.audio.volume = Math.max(0, Math.min(1, sink.audio.volume));
 	}
 
-	// update icon
 	function resolveImageSource() : void {
-		let offSorce = Qt.resolvedUrl("icons/volume_off.svg");
-		let downSorce = Qt.resolvedUrl("icons/volume_down.svg");
-		let upSorce = Qt.resolvedUrl("icons/volume.svg");
-		let currentVolume = sink.audio.volume;
+		let offSource = Qt.resolvedUrl("icons/volume_off.svg");
+		let downSource = Qt.resolvedUrl("icons/volume_down.svg");
+		let upSource = Qt.resolvedUrl("icons/volume.svg");
 
-		if (sink.audio.muted) image.source = offSorce;
-		else {
-			if (currentVolume < 0.5) image.source = downSorce;
-			if (currentVolume == 0) image.source = offSorce;
-			if (currentVolume > 0.5) image.source = upSorce;
+		if (sink.audio.muted || uiVolume === 0) {
+			image.source = offSource;
+		} else if (uiVolume < 0.5) {
+			image.source = downSource;
+		} else {
+			image.source = upSource;
 		}
 	}
 
@@ -68,26 +71,29 @@ Rectangle {
 		anchors.fill: parent
 		cursorShape: Qt.PointingHandCursor
 		hoverEnabled: true
-		/*onEntered: {
-			 image.visible = true
-		 }
-		 onExited: {
-			 image.visible = false
-		 }*/
-		 onClicked: event => {
-			 sink.audio.muted = !sink.audio.muted;
-			 resolveImageSource();
-		 }
-		 onWheel: event => {
-			 if (!sink.audio.muted) {
-				 var step = 0.05;
-				 var up = event.angleDelta.y > 0;
-				 if (up) sink.audio.volume = Math.min(1, sink.audio.volume + step);
-				 if (!up && sink.audio.volume >= 0) sink.audio.volume = Math.max(0, sink.audio.volume - step);
-			 }
-		 }
-	 }
 
-	 VolumeScrollBar {}
- }
+		onClicked: {
+			sink.audio.muted = !sink.audio.muted;
+			resolveImageSource();
+		}
+
+		onWheel: event => {
+			if (!sink.audio.muted) {
+				let step = 0.05;
+				let up = event.angleDelta.y > 0;
+
+				if (up) uiVolume = Math.min(1, uiVolume + step);
+				else uiVolume = Math.max(0, uiVolume - step);
+
+				// моментально меняем UI
+				resolveImageSource();
+
+				// и отправляем новое значение в Pipewire
+				sink.audio.volume = uiVolume;
+			}
+		}
+	}
+
+	VolumeScrollBar {}
+}
 
