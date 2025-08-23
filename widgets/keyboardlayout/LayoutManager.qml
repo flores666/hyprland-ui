@@ -9,7 +9,7 @@ Singleton {
 	id: layoutService
 
 	property string currentLayout: "";
-	property bool capsLockActive: false;
+	//property bool capsLockActive: false;
 
 	function parseLayout(fullLayoutName) {
 		if (!fullLayoutName) return;
@@ -48,7 +48,7 @@ Singleton {
 		}
 	}
 
-	Timer {
+	/*Timer {
 		interval: 200
 		running: true
 		repeat: true
@@ -72,9 +72,9 @@ Singleton {
 				layoutService.currentLayout = layoutService.currentLayout.toLowerCase()
 			}
 		}
+	}*/
 
-		Component.onCompleted: {
-			Hyprland.rawEvent.connect(handleRawEvent);
-		}
+	Component.onCompleted: {
+		Hyprland.rawEvent.connect(handleRawEvent);
 	}
 }
