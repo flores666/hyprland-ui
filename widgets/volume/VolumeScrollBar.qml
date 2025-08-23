@@ -17,7 +17,7 @@ PanelWindow {
 	}
 
 	margins {
-		top: 6
+		top: 600
 		right: 6
 	}
 
@@ -52,38 +52,38 @@ PanelWindow {
 			value: sink.audio.volume
 			anchors.centerIn: parent
 			height: 134
-
+			width: 8
 			handle: Rectangle {
 				width: 30
 				height: 11
 				radius: 16
 				border.color: Env.colors.primary
 				border.width: 4
-				y: slider.visualPosition * (slider.height - height)
-				x: (slider.width - width) / 2
 				color: Env.colors.secondary
+
+				x: (slider.width - width) / 2
+				y: slider.visualPosition * (slider.height - height)
 
 				MouseArea {
 					id: dragArea
 					anchors.fill: parent
-					drag.target: draggableRect
+					drag.target: parent
 					drag.axis: Drag.YAxis
 					drag.minimumY: 0
-					drag.maximumY: 1
-					onPressed: {
-						slider.pressed = true;
-					}
-					onReleased: {
-						slider.pressed = false;
-					}
-					onPositionChanged: event => {
-						var y = event.y;
-						if (y < 0 || y > slider.height) dragArea.drag.active = false;
-						var value = y / slider.height;
+					drag.maximumY: slider.height - parent.height
 
-						console.log(value);
-						slider.value = 1 - value;
-						slider.moved();
+					onPressed: slider.pressed = true
+					onReleased: slider.pressed = false
+
+					onPositionChanged: event => {
+						var y = parent.y
+						// ограничиваем диапазон
+						y = Math.max(0, Math.min(slider.height - parent.height, y))
+
+						// вычисляем значение ползунка от 0 до 1 (сверху вниз)
+						var value = y / (slider.height - parent.height)
+						slider.value = 1 - value
+						slider.moved()
 					}
 				}
 			}
@@ -94,7 +94,7 @@ PanelWindow {
 				width: 4
 				radius: 20
 				y: parent.topPadding + slider.availableHeight / 2 - height / 2
-				x: slider.leftPadding - width / 2
+				x: dragArea.x + width / 2
 
 				Rectangle {
 					height: slider.height * slider.value - 3
@@ -125,7 +125,7 @@ PanelWindow {
 
 			onMoved: event => {
 				let value = slider.value;
-				if (value > 0 && value < 1) sink.audio.volume = value;
+				if (value >= 0 && value <= 1) sink.audio.volume = value;
 			}
 		}
 
