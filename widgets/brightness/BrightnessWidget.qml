@@ -12,8 +12,8 @@ Rectangle {
 
 	IconImage {
 		id: image
-		width: 18
-		height: 18
+		width: 15
+		height: 15
 		anchors.centerIn: parent
 	}
 

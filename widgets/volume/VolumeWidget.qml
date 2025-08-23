@@ -12,9 +12,8 @@ Rectangle {
 
 	IconImage {
 		id: image
-		source: Qt.resolvedUrl("icons/volume.svg")
-		width: 21
-		height: 21
+		width: 17
+		height: 17
 		anchors.centerIn: parent
 	}
 
