@@ -1,10 +1,12 @@
 import Quickshell
 import QtQuick
+import QtQuick.Controls
 import "widgets/clock"
 import "widgets/cpuload"
 import "widgets/workspaces"
 import "widgets/brightness"
 import "widgets/volume"
+import "widgets/keyboardlayout"
 import "globals"
 
 Variants {
@@ -80,6 +82,22 @@ Variants {
 						height: parent.height
 						anchors.verticalCenter: parent.verticalCenter
 						anchors.left: workspaces.right
+					}
+
+					Rectangle {
+						id: layoutWidget
+						width: 20
+						height: parent.height
+						color: Env.colors.primary
+						anchors.left: clockWidget.right
+						anchors.leftMargin: 13
+
+						Label {
+							text: LayoutManager.currentLayout
+							visible: LayoutManager.currentLayout !== ""
+							color: Env.colors.text
+							anchors.verticalCenter: parent.verticalCenter
+						}
 					}
 				}
 			}
