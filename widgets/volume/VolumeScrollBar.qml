@@ -89,7 +89,7 @@ PanelWindow {
 			}
 
 			background: Rectangle {
-				color: "white"
+				color: Env.colors.text
 				height: parent.height
 				width: 4
 				radius: 20
