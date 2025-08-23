@@ -7,6 +7,7 @@ import "widgets/workspaces"
 import "widgets/brightness"
 import "widgets/volume"
 import "widgets/keyboardlayout"
+import "widgets/screenshot"
 import "globals"
 
 Variants {
@@ -86,11 +87,10 @@ Variants {
 
 					Rectangle {
 						id: layoutWidget
-						width: 20
 						height: parent.height
 						color: Env.colors.primary
 						anchors.left: clockWidget.right
-						anchors.leftMargin: 13
+						anchors.leftMargin: 20
 
 						Label {
 							text: LayoutManager.currentLayout
@@ -98,6 +98,15 @@ Variants {
 							color: Env.colors.text
 							anchors.verticalCenter: parent.verticalCenter
 						}
+					}
+
+					ScreenshotWidget {
+						id: screenshot
+						anchors.left: layoutWidget.right
+						anchors.leftMargin: 40
+						width: 22
+						height: 18
+						anchors.verticalCenter: parent.verticalCenter
 					}
 				}
 			}
