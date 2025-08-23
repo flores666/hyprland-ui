@@ -32,7 +32,7 @@ Rectangle {
 					width: circleRadius
 					height: circleRadius
 					radius: 180
-					color: isActive ? "white" : "gray"
+					color: isActive ? Env.colors.text : Env.colors.gray
 					anchors.centerIn: parent
 				}
 

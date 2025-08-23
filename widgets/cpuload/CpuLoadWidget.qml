@@ -22,7 +22,7 @@ Rectangle {
 
 		Text {
 			id: clock
-			color: "white"
+			color: Env.colors.text
 			text: CpuLoad.currentLoad
 			anchors.verticalCenter: parent.verticalCenter
 		}

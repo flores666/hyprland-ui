@@ -10,7 +10,7 @@ Rectangle {
 	Text {
 		id: clock
 		anchors.centerIn: parent
-		color: "white"
+		color: Env.colors.text
 		text: ClockManager.currentTime
 	}
 }
