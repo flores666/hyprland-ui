@@ -55,13 +55,19 @@ Rectangle {
 
 	function resolveImageSource() : void {
 		let offSource = Qt.resolvedUrl("icons/volume_off.svg");
+		let midSource = Qt.resolvedUrl("icons/volume_mid.svg");
 		let downSource = Qt.resolvedUrl("icons/volume_down.svg");
-		let upSource = Qt.resolvedUrl("icons/volume.svg");
+		let upSource = Qt.resolvedUrl("icons/volume_up.svg");
 
-		if (sink.audio.muted || uiVolume === 0) {
+		if (sink.audio.muted) {
 			image.source = offSource;
-		} else if (uiVolume < 0.5) {
+			return;
+		}
+
+		if (uiVolume === 0) {
 			image.source = downSource;
+		} else if (uiVolume < 0.5) {
+			image.source = midSource;
 		} else {
 			image.source = upSource;
 		}
