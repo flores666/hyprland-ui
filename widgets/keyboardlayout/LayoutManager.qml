@@ -9,6 +9,7 @@ Singleton {
 	id: layoutService
 
 	property string currentLayout: "";
+	property bool capsLockActive: false;
 
 	function parseLayout(fullLayoutName) {
 		if (!fullLayoutName) return;
@@ -47,8 +48,33 @@ Singleton {
 		}
 	}
 
-	Component.onCompleted: {
-		Hyprland.rawEvent.connect(handleRawEvent);
+	Timer {
+		interval: 200
+		running: true
+		repeat: true
+		onTriggered: capsProcess.running = true;
+	}
+
+	Process {
+		id: capsProcess
+		command: [
+			"sh", "-c",
+			"cat /sys/class/leds/*::capslock/brightness | head -n1"
+		]
+		stdout: StdioCollector {
+			onStreamFinished: {
+				const text = this.text.trim()
+				layoutService.capsLockActive = (text === "1")
+
+				if (layoutService.capsLockActive)
+				layoutService.currentLayout = layoutService.currentLayout.toUpperCase()
+				else
+				layoutService.currentLayout = layoutService.currentLayout.toLowerCase()
+			}
+		}
+
+		Component.onCompleted: {
+			Hyprland.rawEvent.connect(handleRawEvent);
+		}
 	}
 }
-
