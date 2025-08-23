@@ -15,8 +15,8 @@ Rectangle {
 		IconImage {
 			id: icon
 			source: Qt.resolvedUrl("icons/cpu.svg")
-			width: 18
-			height: 18
+			width: 15
+			height: 15
 			anchors.verticalCenter: parent.verticalCenter
 		}
 
