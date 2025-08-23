@@ -35,7 +35,13 @@ Variants {
 				height: parent.height
 
 				BrightnessWidget {
+					id: brightnessWidget
 					width: 20
+					onBrightnessChange: brightnessScrollBar.handleBrightnessChange(brightnessWidget.uiBrightness);
+				}
+
+				BrightnessScrollBar {
+					id: brightnessScrollBar
 				}
 			}
 
