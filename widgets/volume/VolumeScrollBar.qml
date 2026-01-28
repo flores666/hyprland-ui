@@ -29,7 +29,7 @@ PanelWindow {
 	}
 
 	Connections {
-		target: sink?.audio
+		target: sink ? sink.audio : null
 		function onVolumeChanged() {
 			root.visible = true;
 			visibilityHandler.restart();
@@ -49,7 +49,7 @@ PanelWindow {
 			from: 0
 			to: 1
 			z: 2
-			value: sink.audio.volume
+			value: (sink && sink.audio) ? sink.audio.volume : 0
 			anchors.centerIn: parent
 			height: 134
 			width: 8
@@ -125,7 +125,7 @@ PanelWindow {
 
 			onMoved: event => {
 				let value = slider.value;
-				if (value >= 0 && value <= 1) sink.audio.volume = value;
+				if (sink && sink.audio && value >= 0 && value <= 1) sink.audio.volume = value;
 			}
 		}
 
@@ -146,4 +146,3 @@ PanelWindow {
 		onTriggered: root.visible = false
 	}
 }
-
