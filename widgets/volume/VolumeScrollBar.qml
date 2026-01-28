@@ -23,6 +23,7 @@ PanelWindow {
 
 	property bool ready: Pipewire.defaultAudioSink?.ready ?? false
 	property PwNode sink: Pipewire.defaultAudioSink
+	property real uiVolume: 0
 
 	PwObjectTracker {
 		objects: [sink]
@@ -33,7 +34,31 @@ PanelWindow {
 		function onVolumeChanged() {
 			root.visible = true;
 			visibilityHandler.restart();
+			if (!sink || !sink.audio) {
+				uiVolume = 0;
+				slider.value = uiVolume;
+				return;
+			}
+			uiVolume = clampVolume(sink.audio.volume);
+			slider.value = uiVolume;
 		}
+	}
+
+	onSinkChanged: {
+		if (!sink || !sink.audio) {
+			uiVolume = 0;
+			slider.value = uiVolume;
+			return;
+		}
+		uiVolume = clampVolume(sink.audio.volume);
+		slider.value = uiVolume;
+	}
+
+	function clampVolume(value) : real {
+		if (value == null || isNaN(value)) {
+			return 0;
+		}
+		return Math.max(0, Math.min(1, value));
 	}
 
 	Rectangle {
@@ -49,7 +74,7 @@ PanelWindow {
 			from: 0
 			to: 1
 			z: 2
-			value: (sink && sink.audio) ? sink.audio.volume : 0
+			value: uiVolume
 			anchors.centerIn: parent
 			height: 134
 			width: 8
@@ -125,7 +150,10 @@ PanelWindow {
 
 			onMoved: event => {
 				let value = slider.value;
-				if (sink && sink.audio && value >= 0 && value <= 1) sink.audio.volume = value;
+				uiVolume = clampVolume(value);
+				if (sink && sink.audio) {
+					sink.audio.volume = uiVolume;
+				}
 			}
 		}
 
