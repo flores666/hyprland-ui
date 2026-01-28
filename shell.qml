@@ -8,6 +8,7 @@ import "widgets/brightness"
 import "widgets/volume"
 import "widgets/keyboardlayout"
 import "widgets/screenshot"
+import "widgets/taskbar"
 import "globals"
 
 Variants {
@@ -128,7 +129,31 @@ Variants {
 				}
 			}
 		}
+
+		PanelWindow {
+			property var modelData
+			screen: modelData
+
+			anchors {
+				bottom: true
+				left: true
+				right: true
+			}
+
+			implicitHeight: Env.sizes.barHeight
+
+			Rectangle {
+				id: taskbarPanel
+				color: Env.colors.primary
+				anchors {
+					fill: parent
+				}
+
+				TaskbarWidget {
+					anchors.fill: parent
+				}
+			}
+		}
 	}
 }
-
 
