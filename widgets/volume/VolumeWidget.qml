@@ -22,15 +22,18 @@ Rectangle {
 	property PwNode source: Pipewire.defaultAudioSource
 
 	// локальное значение для UI (обновляется мгновенно)
-	property real uiVolume: sink.audio.volume
+	property real uiVolume: (sink && sink.audio) ? sink.audio.volume : 0
 
 	PwObjectTracker {
 		objects: [sink, source]
 	}
 
 	Connections {
-		target: sink.audio
+		target: sink ? sink.audio : null
 		function onVolumeChanged() {
+			if (!sink || !sink.audio) {
+				return;
+			}
 			preventWrongAudioValues();
 			uiVolume = sink.audio.volume;   // синхронизируем локальное состояние
 			resolveImageSource();
@@ -40,15 +43,32 @@ Rectangle {
 		}
 	}
 
+	onSinkChanged: {
+		if (sink && sink.audio) {
+			uiVolume = sink.audio.volume;
+			resolveImageSource();
+		} else {
+			uiVolume = 0;
+			resolveImageSource();
+		}
+	}
+
 	Component.onCompleted: {
-		if (sink.ready && (isNaN(sink.audio.volume) || sink.audio.volume == null)) {
+		if (sink && sink.ready && (isNaN(sink.audio.volume) || sink.audio.volume == null)) {
 			sink.audio.volume = 0;
 		}
-		uiVolume = sink.audio.volume;
+		if (sink && sink.audio) {
+			uiVolume = sink.audio.volume;
+		} else {
+			uiVolume = 0;
+		}
 		resolveImageSource();
 	}
 
 	function preventWrongAudioValues() : void {
+		if (!sink || !sink.audio) {
+			return;
+		}
 		sink.audio.volume = Math.max(0, Math.min(1, sink.audio.volume));
 	}
 
@@ -57,6 +77,11 @@ Rectangle {
 		let midSource = Qt.resolvedUrl("icons/volume_mid.svg");
 		let downSource = Qt.resolvedUrl("icons/volume_down.svg");
 		let upSource = Qt.resolvedUrl("icons/volume_up.svg");
+
+		if (!sink || !sink.audio) {
+			image.source = offSource;
+			return;
+		}
 
 		if (sink.audio.muted) {
 			image.source = offSource;
@@ -78,11 +103,17 @@ Rectangle {
 		hoverEnabled: true
 
 		onClicked: {
+			if (!sink || !sink.audio) {
+				return;
+			}
 			sink.audio.muted = !sink.audio.muted;
 			resolveImageSource();
 		}
 
 		onWheel: event => {
+			if (!sink || !sink.audio) {
+				return;
+			}
 			if (!sink.audio.muted) {
 				let step = 0.05;
 				let up = event.angleDelta.y > 0;
@@ -101,4 +132,3 @@ Rectangle {
 
 	VolumeScrollBar {}
 }
-
