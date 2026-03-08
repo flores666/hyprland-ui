@@ -98,6 +98,7 @@ Variants {
 							visible: LayoutManager.currentLayout !== ""
 							color: Env.colors.text
 							anchors.verticalCenter: parent.verticalCenter
+							font.pixelSize: 13
 						}
 					}
 

@@ -38,7 +38,7 @@ Rectangle {
 			id: day
 			color: Env.colors.text
 			text: ClockManager.currentTime.substring(6)
-			font.pixelSize: 14
+			font.pixelSize: 13
 			anchors.left: filler.right
 			anchors.verticalCenter: parent.verticalCenter
 			anchors.leftMargin: 3
