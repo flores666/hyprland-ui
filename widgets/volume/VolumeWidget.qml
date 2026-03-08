@@ -7,14 +7,14 @@ import Quickshell.Services.Pipewire
 Rectangle {
 	id: volumeWidget
 	height: parent.height
-	width: parent.width * 0.1
 	color: Env.colors.primary
 
 	IconImage {
 		id: image
-		width: 17
-		height: 17
+		width: 10
+		height: 10
 		anchors.centerIn: parent
+		visible: false
 	}
 
 	property bool ready: Pipewire.defaultAudioSink?.ready ?? false
@@ -99,7 +99,7 @@ Rectangle {
 
 	MouseArea {
 		anchors.fill: parent
-		cursorShape: Qt.PointingHandCursor
+		//cursorShape: Qt.PointingHandCursor
 		hoverEnabled: true
 
 		onClicked: {

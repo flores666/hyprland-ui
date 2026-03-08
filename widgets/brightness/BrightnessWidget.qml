@@ -7,14 +7,14 @@ import Quickshell.Io
 Rectangle {
 	id: brightnessWidget
 	height: parent.height
-	width: parent.width * 0.1
 	color: Env.colors.primary
 
 	IconImage {
 		id: image
-		width: 15
-		height: 15
+		width: 9
+		height: 9
 		anchors.centerIn: parent
+		visible: false
 	}
 
 	// локальное состояние яркости (0..1)
@@ -105,7 +105,7 @@ Rectangle {
 
 	MouseArea {
 		anchors.fill: parent
-		cursorShape: Qt.PointingHandCursor
+		//cursorShape: Qt.PointingHandCursor
 		hoverEnabled: true
 
 		onWheel: event => {

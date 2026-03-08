@@ -11,7 +11,7 @@ QtObject {
 
 	readonly property QtObject sizes: QtObject {
 		readonly property real aspectRatio: Screen.width / Screen.height;
-		readonly property real barHeight: Screen.height * 0.025;
+		readonly property real barHeight: 33;
 		readonly property real barWidthCoef: 0.25;
 	}
 }

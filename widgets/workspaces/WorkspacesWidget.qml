@@ -21,7 +21,7 @@ Rectangle {
             model: workspacesRow.allWorkspaces
 
             delegate: Rectangle {
-                width: root.height
+                width: root.height * 0.85
                 height: root.height
                 color: "transparent"
 
@@ -40,7 +40,7 @@ Rectangle {
 
 				// Основной кружок
 				Rectangle {
-					property int circleRadius: isActive ? root.height * 0.6 : root.height * 0.24
+					property int circleRadius: isActive ? root.height * 0.5 : root.height * 0.16
 					width: circleRadius
 					height: circleRadius
 					radius: 180

@@ -52,6 +52,7 @@ Variants {
 				id: center
 				color: Env.colors.primary
 				height: parent.height
+
 				anchors { 
 					right: right.left
 					left: left.right
@@ -64,7 +65,7 @@ Variants {
 
 					CpuLoadWidget {
 						id: cpuLoadWidget
-						width: 54
+						width: 65
 						height: parent.height
 						anchors.verticalCenter: parent.verticalCenter
 						anchors.right: workspaces.left
@@ -72,14 +73,14 @@ Variants {
 
 					WorkspacesWidget {
 						id: workspaces
-						width: 255
+						width: 315
 						height: parent.height
 						anchors.horizontalCenter: parent.horizontalCenter
 					}
 
 					ClockWidget {
 						id: clockWidget
-						width: 140
+						width: 155
 						height: parent.height
 						anchors.verticalCenter: parent.verticalCenter
 						anchors.left: workspaces.right
@@ -90,7 +91,7 @@ Variants {
 						height: parent.height
 						color: Env.colors.primary
 						anchors.left: clockWidget.right
-						anchors.leftMargin: 20
+						//anchors.leftMargin: 30
 
 						Label {
 							text: LayoutManager.currentLayout
@@ -107,6 +108,7 @@ Variants {
 						width: 22
 						height: 18
 						anchors.verticalCenter: parent.verticalCenter
+						visible: false
 					}
 				}
 			}
