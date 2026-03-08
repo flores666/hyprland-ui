@@ -46,6 +46,7 @@ Rectangle {
 					radius: 180
 					color: isActive ? Env.colors.text : Env.colors.gray
 					anchors.centerIn: parent
+					opacity: isActive ? 1 : 0.8
 
 					Behavior on width { NumberAnimation { duration: 200 } }
 					Behavior on height { NumberAnimation { duration: 200 } }
