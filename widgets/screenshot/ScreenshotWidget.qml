@@ -4,10 +4,10 @@ import "../../globals"
 import Quickshell.Widgets
 
 Rectangle {
-    width: parent.width * 0.1
+    width: parent.width
     height: parent.height
     color: Env.colors.primary
-    radius: 4
+    radius: 180
 
     MouseArea {
         cursorShape: Qt.PointingHandCursor
@@ -22,8 +22,8 @@ Rectangle {
     IconImage {
         id: icon
         source: Qt.resolvedUrl("icons/screen.svg")
-        width: 18
-        height: 18
+        width: 14
+        height: 14
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
     }
@@ -34,4 +34,3 @@ Rectangle {
         running: false
     }
 }
-

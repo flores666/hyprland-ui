@@ -11,127 +11,124 @@ import "widgets/screenshot"
 import "globals"
 
 Variants {
-	model: Quickshell.screens;
+    model: Quickshell.screens
 
-	delegate: Component {
-		PanelWindow {
-			property var modelData
-			screen: modelData
+    delegate: Component {
+        PanelWindow {
+            property var modelData
+            screen: modelData
 
-			anchors {
-				top: true
-				left: true
-				right: true
-			}
+            anchors {
+                top: true
+                left: true
+                right: true
+            }
 
-			implicitHeight: Env.sizes.barHeight;
+            implicitHeight: Env.sizes.barHeight
 
-			Rectangle {
-				id: left
-				color: Env.colors.primary
-				anchors { 
-					left: parent.left
-					top: parent.top
-				}
+            Rectangle {
+                id: left
+                color: Env.colors.primary
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                }
 
-				width: Screen.width * Env.sizes.barWidthCoef
-				height: parent.height
+                width: Screen.width * Env.sizes.barWidthCoef
+                height: parent.height
 
-				BrightnessWidget {
-					id: brightnessWidget
-					width: 20
-					onBrightnessChange: brightnessScrollBar.handleBrightnessChange(brightnessWidget.uiBrightness);
-				}
+                BrightnessWidget {
+                    id: brightnessWidget
+                    width: 20
+                    onBrightnessChange: brightnessScrollBar.handleBrightnessChange(brightnessWidget.uiBrightness)
+                }
 
-				BrightnessScrollBar {
-					id: brightnessScrollBar
-				}
-			}
+                BrightnessScrollBar {
+                    id: brightnessScrollBar
+                }
+            }
 
-			Rectangle {
-				id: center
-				color: Env.colors.primary
-				height: parent.height
+            Rectangle {
+                id: center
+                color: Env.colors.primary
+                height: parent.height
 
-				anchors { 
-					right: right.left
-					left: left.right
-					top: parent.top
-				}
+                anchors {
+                    right: right.left
+                    left: left.right
+                    top: parent.top
+                }
 
-				Rectangle {
-					anchors.centerIn: center 
-					height: parent.height
+                Rectangle {
+                    anchors.centerIn: center
+                    height: parent.height
 
-					CpuLoadWidget {
-						id: cpuLoadWidget
-						width: 65
-						height: parent.height
-						anchors.verticalCenter: parent.verticalCenter
-						anchors.right: workspaces.left
-					}
+                    CpuLoadWidget {
+                        id: cpuLoadWidget
+                        width: 65
+                        height: parent.height
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: workspaces.left
+                    }
 
-					WorkspacesWidget {
-						id: workspaces
-						width: 315
-						height: parent.height
-						anchors.horizontalCenter: parent.horizontalCenter
-					}
+                    WorkspacesWidget {
+                        id: workspaces
+                        width: 270
+                        height: parent.height
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
 
-					ClockWidget {
-						id: clockWidget
-						width: 155
-						height: parent.height
-						anchors.verticalCenter: parent.verticalCenter
-						anchors.left: workspaces.right
-					}
+                    ClockWidget {
+                        id: clockWidget
+                        width: 115
+                        height: parent.height
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: workspaces.right
+                    }
 
-					Rectangle {
-						id: layoutWidget
-						height: parent.height
-						color: Env.colors.primary
-						anchors.left: clockWidget.right
-						//anchors.leftMargin: 30
+                    Rectangle {
+                        id: layoutWidget
+                        height: parent.height
+                        color: Env.colors.primary
+                        anchors.left: clockWidget.right
 
-						Label {
-							text: LayoutManager.currentLayout
-							visible: LayoutManager.currentLayout !== ""
-							color: Env.colors.text
-							anchors.verticalCenter: parent.verticalCenter
-							font.pixelSize: 13
-						}
-					}
+                        Label {
+                            text: LayoutManager.currentLayout
+                            visible: LayoutManager.currentLayout !== ""
+                            color: Env.colors.text
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: 13
+                        }
+                    }
 
-					ScreenshotWidget {
-						id: screenshot
-						anchors.left: layoutWidget.right
-						anchors.leftMargin: 40
-						width: 22
-						height: 18
-						anchors.verticalCenter: parent.verticalCenter
-						visible: false
-					}
-				}
-			}
+                    ScreenshotWidget {
+                        id: screenshot
+                        anchors.left: layoutWidget.right
+                        anchors.leftMargin: 28
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 22
+                        height: 22
+                    }
+                }
+            }
 
-			Rectangle {
-				id: right
-				color: Env.colors.primary
-				anchors { 
-					right: parent.right
-					top: parent.top
-				}
+            Rectangle {
+                id: right
+                color: Env.colors.primary
+                anchors {
+                    right: parent.right
+                    top: parent.top
+                }
 
-				width: Screen.width * Env.sizes.barWidthCoef
-				height: parent.height
+                width: Screen.width * Env.sizes.barWidthCoef
+                height: parent.height
 
-				VolumeWidget {
-					width: 20
-					anchors.right: right.right
-				}
-			}
-		}
-	}
+                VolumeWidget {
+                    id: volume
+                    width: 20
+                    anchors.right: right.right
+                }
+            }
+        }
+    }
 }
-
-
